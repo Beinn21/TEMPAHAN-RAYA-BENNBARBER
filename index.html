@@ -57,8 +57,8 @@
     button {
       width: 100%;
       padding: 15px;
-      background-color: #00FF7F;
-      color: #000;
+      background-color: #00FF7F; /* hijau cerah */
+      color: #fff; /* tulisan putih */
       border: none;
       border-radius: 5px;
       font-weight: bold;
@@ -81,7 +81,7 @@
     }
 
     .whatsapp-btn {
-      background-color: #25D366;
+      background-color: #25D366; /* hijau whatsapp */
       color: #fff;
       padding: 15px;
       border-radius: 5px;
@@ -89,6 +89,11 @@
       margin-top: 10px;
       text-decoration: none;
       font-weight: bold;
+      transition: 0.3s ease;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebe5d;
     }
 
     .footer {
@@ -97,6 +102,10 @@
       color: #777;
     }
 
+    #response-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -106,7 +115,7 @@
     <!-- Logo -->
     <div class="logo">
       <img src="beinbarber-logo.JPG" alt="BeinnBarber Logo">
-      <!-- Pastikan kau upload logo ni sekali dalam folder repo github -->
+      <!-- Upload logo ni sekali kat folder repo -->
     </div>
 
     <!-- Tajuk -->
@@ -140,12 +149,11 @@
         <option value="11:30 PM">11:30 PM</option>
         <option value="12:00 AM">12:00 AM</option>
         <option value="12:30 AM">12:30 AM</option>
-        <!-- Kau boleh tambah slot masa lain ikut keperluan -->
       </select>
 
       <button type="submit">Tempah Sekarang</button>
 
-      <p id="response-message" style="margin-top: 10px;"></p>
+      <p id="response-message"></p>
     </form>
 
     <!-- Contact Info -->
@@ -170,9 +178,15 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const nama = document.getElementById('nama').value;
-      const notel = document.getElementById('notel').value;
+      const nama = document.getElementById('nama').value.trim();
+      const notel = document.getElementById('notel').value.trim();
       const masa = document.getElementById('masa').value;
+
+      if (!nama || !notel || !masa) {
+        responseMessage.style.color = 'red';
+        responseMessage.textContent = 'Sila lengkapkan semua maklumat!';
+        return;
+      }
 
       const data = {
         nama: nama,
@@ -180,25 +194,27 @@
         masa: masa
       };
 
-      fetch('https://script.google.com/macros/s/AKfycbxIJvQtR1OrtFCJt9370yVxU8Um7J0DX5SvGsKq1a2J9DUCLDXU5i3qPAJ8hgM57BaW/exec', { // Masukkan URL Web App dari Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbwv2R8WNzWj4h9L8rrtqJ_4YHJ_1PHXltWwQmHUgzO_KImwcXvUoyCCaPiB9C6YAev2/exec', { 
+        // GANTI LINK NI DENGAN WEB APP URL KAU SENDIRI
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' }
       })
       .then(res => res.json())
       .then(res => {
-        if(res.status === 'success') {
+        if (res.status === 'success') {
           responseMessage.style.color = 'green';
+          responseMessage.textContent = res.message;
+          form.reset();
         } else {
           responseMessage.style.color = 'red';
+          responseMessage.textContent = res.message || 'Ada masalah, sila cuba lagi.';
         }
-        responseMessage.textContent = res.message;
-        form.reset();
       })
       .catch(error => {
         console.error('Error!', error.message);
         responseMessage.style.color = 'red';
-        responseMessage.textContent = 'Ada masalah, sila cuba lagi.';
+        responseMessage.textContent = 'Ada masalah sambungan, sila cuba lagi.';
       });
     });
   </script>
