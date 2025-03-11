@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tempahan BeinnBarber</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo img {
+      max-width: 100%;
+      height: auto;
+      margin: 20px 0;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      background-color: #222;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #888;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #00FF7F;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00cc66;
+    }
+
+    .contact {
+      margin-top: 20px;
+    }
+
+    .contact a {
+      color: #00FF7F;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      display: block;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #777;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Logo -->
+    <div class="logo">
+      <img src="logo-beinnbarber.png" alt="BeinnBarber Logo">
+      <!-- Pastikan kau upload logo ni sekali dalam folder repo github -->
+    </div>
+
+    <!-- Tajuk -->
+    <h2>Tempahan Gunting Rambut</h2>
+
+    <!-- Borang Tempahan -->
+    <form id="booking-form">
+      <label for="nama">Nama:</label>
+      <input type="text" id="nama" name="nama" placeholder="Masukkan nama anda" required>
+
+      <label for="notel">Nombor Telefon:</label>
+      <input type="tel" id="notel" name="notel" placeholder="Contoh: 0123456789" required>
+
+      <label for="masa">Masa Tempahan:</label>
+      <select id="masa" name="masa" required>
+        <option value="">-- Pilih Masa --</option>
+        <option value="1:30 PM">1:30 PM</option>
+        <option value="2:00 PM">2:00 PM</option>
+        <option value="2:30 PM">2:30 PM</option>
+        <option value="3:00 PM">3:00 PM</option>
+        <option value="3:30 PM">3:30 PM</option>
+        <option value="4:00 PM">4:00 PM</option>
+        <option value="4:30 PM">4:30 PM</option>
+        <option value="5:00 PM">5:00 PM</option>
+        <option value="5:30 PM">5:30 PM</option>
+        <option value="9:00 PM">9:00 PM</option>
+        <option value="9:30 PM">9:30 PM</option>
+        <option value="10:00 PM">10:00 PM</option>
+        <option value="10:30 PM">10:30 PM</option>
+        <option value="11:00 PM">11:00 PM</option>
+        <option value="11:30 PM">11:30 PM</option>
+        <option value="12:00 AM">12:00 AM</option>
+        <option value="12:30 AM">12:30 AM</option>
+        <!-- Kau boleh tambah slot masa lain ikut keperluan -->
+      </select>
+
+      <button type="submit">Tempah Sekarang</button>
+
+      <p id="response-message" style="margin-top: 10px;"></p>
+    </form>
+
+    <!-- Contact Info -->
+    <div class="contact">
+      <p>Atau hubungi kami:</p>
+      <p><strong>Telefon:</strong> <a href="tel:0192032123">019-2032123</a></p>
+      <a class="whatsapp-btn" href="https://wa.me/60192032123" target="_blank">WhatsApp Sekarang</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      © 2025 BeinnBarber. Semua Hak DiLindungi.
+    </div>
+
+  </div>
+
+  <!-- JS Form Submission -->
+  <script>
+    const form = document.getElementById('booking-form');
+    const responseMessage = document.getElementById('response-message');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('nama').value;
+      const notel = document.getElementById('notel').value;
+      const masa = document.getElementById('masa').value;
+
+      const data = {
+        nama: nama,
+        notel: notel,
+        masa: masa
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbwbGLHKknzQOhY3Kly25D3cQnLBz6n1ilH4na3eGM9okfC3lDILK2Qizo7zjUxte4PF/exec', { // Masukkan URL Web App dari Google Apps Script
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.status === 'success') {
+          responseMessage.style.color = 'green';
+        } else {
+          responseMessage.style.color = 'red';
+        }
+        responseMessage.textContent = res.message;
+        form.reset();
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        responseMessage.style.color = 'red';
+        responseMessage.textContent = 'Ada masalah, sila cuba lagi.';
+      });
+    });
+  </script>
+
+</body>
+</html>
